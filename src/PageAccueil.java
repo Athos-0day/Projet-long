@@ -13,7 +13,7 @@ public class PageAccueil extends JFrame {
         setLocationRelativeTo(null);
 
         // Charger l'image (ici gif) de fond du simulateur.
-        ImageIcon gifFond = new ImageIcon("ressources/images//fondAnime.gif");
+        ImageIcon gifFond = new ImageIcon("images/fondAnime.gif");
 
         // Récupérer la taille de l'image pour adapter la taille de la fenetre.
         int largeurGif = gifFond.getIconWidth();
