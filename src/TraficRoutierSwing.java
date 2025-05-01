@@ -1,5 +1,6 @@
 import java.awt.*;
-import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.*;
 
 public class TraficRoutierSwing extends JFrame {
@@ -11,6 +12,9 @@ public class TraficRoutierSwing extends JFrame {
 
     private int elapsedSeconds = 0;
     private JLabel timerLabel;
+
+    // Liste des véhicules
+    private List<Vehicule> vehicules;
 
     public TraficRoutierSwing() {
         super("Simulation");
@@ -69,8 +73,25 @@ public class TraficRoutierSwing extends JFrame {
         gbc.fill = GridBagConstraints.BOTH;
         add(simulationPanel, gbc);
 
-        // Timer de simulation
+        // === Création de la liste des véhicules ===
+        vehicules = new ArrayList<>();
+        vehicules.add(new Voiture(0, 270));        // Voiture placée sur la route
+        vehicules.add(new DeuxRoues(50, 280));     // Deux-roues à une autre position
+        vehicules.add(new PoidsLourds(100, 260));  // Poids-lourds en haut de la route
+
+        // === Création du panneau de simulation ===
+        PanneauSimulation panneau = new PanneauSimulation(vehicules);
+
+        // Ajouter le panneau de simulation au simulationPanel
+        simulationPanel.add(panneau, BorderLayout.CENTER);
+
+        // Timer pour gérer la simulation des véhicules
         simulationTimer = new Timer(simulationSpeed, e -> {
+            for (Vehicule v : vehicules) {
+                v.accelerer(0.1);       // Accélération simulée
+                v.deplacerSurX(0.1);    // Déplacement vers la droite
+            }
+            panneau.repaint();          // Redessiner les véhicules à chaque itération
             elapsedSeconds++;
             timerLabel.setText("Temps : " + elapsedSeconds + " s");
         });
@@ -85,6 +106,7 @@ public class TraficRoutierSwing extends JFrame {
         stopButton.addActionListener(e -> {
             simulationTimer.stop();
             startButton.setEnabled(true);
+            stopButton.setEnabled(false);
         });
 
         vitesseButton.addActionListener(e -> {
@@ -104,7 +126,7 @@ public class TraficRoutierSwing extends JFrame {
                 if (choix.equals("x0.5")) {
                     simulationSpeed = 1500;
                 } else if (choix.equals("x1")) {
-                    simulationSpeed = 1000; 
+                    simulationSpeed = 1000;
                 } else if (choix.equals("x1.5")) {
                     simulationSpeed = 666;
                 } else if (choix.equals("x2")) {
