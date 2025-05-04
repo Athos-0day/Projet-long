@@ -1,7 +1,7 @@
 /**
- *La classe Voiture est une classe fille de la classe Vehicule. Une voiture à le même
- *fonctionnement que le véhicule mais sa dimension et sa vitesse maximale sont définies 
- *par des constantes.
+ * La classe Voiture est une classe fille de la classe Vehicule. Une voiture a le même
+ * fonctionnement qu'un véhicule mais ses dimensions et sa vitesse maximale sont définies 
+ * par des constantes.
  *
  * @author Morain Arthur
  */
@@ -14,24 +14,23 @@ public class Voiture extends Vehicule {
 
     /**
      * Constructeur de la classe Voiture.
+     * Initialise une voiture avec une position (x, y) et des dimensions fixes.
      * @param x La position initiale en X.
      * @param y La position initiale en Y.
      */
     public Voiture(double x, double y) {
-        super(x, y, LONGUEUR, LARGEUR, VITESSE_MAX);
+        super(x, y, LONGUEUR, LARGEUR, VITESSE_MAX);  // Appel du constructeur de la classe parente
     }
     
+    /**
+     * Redéfinition de la méthode toString() pour afficher les informations spécifiques à la Voiture.
+     * @return Une chaîne de caractères représentant la voiture.
+     */
     @Override
     public String toString() {
+        // On réutilise la méthode toString de la classe parente et on ajoute des détails spécifiques à la voiture
         return "Voiture {\n" +
-                "  Position: (" + this.getPosition().getAbscisse() + ", " + this.getPosition().getOrdonee() + ")\n" +
-                "  Longueur: " + LONGUEUR + "m\n" +
-                "  Largeur: " + LARGEUR + "m\n" +
-                "  Vitesse Max: " + VITESSE_MAX + " km/h\n" +
-                "  Vitesse Actuelle: " + this.getVitesseActuelle() + " km/h\n" +
-                "  Accélération: " + this.getAcceleration() + " m/s²\n" +
-                "  En mouvement: " + (this.estEnMouvement() ? "Oui" : "Non") + "\n" +
-                "  Conducteur: " + this.getConducteur().toString() + "\n" +
+                super.toString() + // Réutilisation de la méthode toString de la classe parent (Vehicule)
                 "}";
     }
 }

@@ -6,7 +6,7 @@ import javax.swing.*;
 
 public class PanneauSimulation extends JPanel {
     private List<Vehicule> vehicules;
-    private List<FeuSignalisation> feux;  // Liste des feux de signalisation
+    private List<FeuSignalisation> feux;
     private Timer feuTimer;
 
     private static final int ROUTE_WIDTH = 100;
@@ -19,24 +19,19 @@ public class PanneauSimulation extends JPanel {
         setPreferredSize(new Dimension(800, 800));
         setBackground(new Color(34, 139, 34)); // Vert herbe
 
-        // Timer pour changer l'état des feux (rouge/vert) toutes les secondes
         feuTimer = new Timer(5000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Alterner l'état de chaque feu
                 for (FeuSignalisation feu : feux) {
-                    feu.alterner();  // Alterne l'état du feu
+                    feu.alterner();
                 }
-                repaint();  // Redessiner après chaque changement
+                repaint();
             }
         });
 
-        // Initialisation des feux de signalisation après la création du panneau
-        // (doit être après setPreferredSize())
-        feuTimer.start(); // Démarrer le cycle des feux
+        feuTimer.start();
     }
 
-    // Méthode appelée pour dessiner l'ensemble du panneau
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -45,40 +40,34 @@ public class PanneauSimulation extends JPanel {
         int h = getHeight();
         int rw = ROUTE_WIDTH;
         int tw = TROTTOIR_WIDTH;
-        
-        // Calcul des coordonnées pour positionner la route au centre du panneau
+
         int roadX = (w - rw) / 2;
         int roadY = (h - rw) / 2;
 
-        // === TROTTOIRS ===
+        // Trottoirs
         g.setColor(Color.LIGHT_GRAY);
-        g.fillRect(0, roadY - tw, w, tw);           // haut
-        g.fillRect(0, roadY + rw, w, tw);           // bas
-        g.fillRect(roadX - tw, 0, tw, h);           // gauche
-        g.fillRect(roadX + rw, 0, tw, h);           // droite
+        g.fillRect(0, roadY - tw, w, tw);     // haut
+        g.fillRect(0, roadY + rw, w, tw);     // bas
+        g.fillRect(roadX - tw, 0, tw, h);     // gauche
+        g.fillRect(roadX + rw, 0, tw, h);     // droite
 
-        // === ROUTES ===
+        // Routes
         g.setColor(Color.GRAY);
-        g.fillRect(0, roadY, w, rw);                // horizontale
-        g.fillRect(roadX, 0, rw, h);                // verticale
+        g.fillRect(0, roadY, w, rw);          // horizontale
+        g.fillRect(roadX, 0, rw, h);          // verticale
 
-        // === BORDURES BLANCHES ===
+        // Bordures blanches
         g.setColor(Color.WHITE);
-        // Horizontale gauche
-        g.fillRect(0, roadY, roadX + 2, 2); // Allonger un peu la ligne gauche
-        g.fillRect(0, roadY + rw - 2, roadX + 2, 2); // Allonger un peu la ligne gauche en bas
-        // Horizontale droite
-        g.fillRect(roadX + rw - 2, roadY, w - roadX - rw + 2, 2); // Allonger un peu la ligne droite
-        g.fillRect(roadX + rw - 2, roadY + rw - 2, w - roadX - rw + 2, 2); // Allonger un peu la ligne droite en bas
-        // Verticale haut
-        g.fillRect(roadX, 0, 2, roadY + 2); // Allonger la ligne du haut
-        g.fillRect(roadX + rw - 2, 0, 2, roadY + 2); // Allonger la ligne du haut côté droit
-        // Verticale bas
-        g.fillRect(roadX, roadY + rw - 2, 2, h - roadY - rw + 2); // Allonger la ligne du bas
-        g.fillRect(roadX + rw - 2, roadY + rw - 2, 2, h - roadY - rw + 2); // Allonger la ligne du bas côté droit
+        g.fillRect(0, roadY, roadX + 2, 2);
+        g.fillRect(0, roadY + rw - 2, roadX + 2, 2);
+        g.fillRect(roadX + rw - 2, roadY, w - roadX - rw + 2, 2);
+        g.fillRect(roadX + rw - 2, roadY + rw - 2, w - roadX - rw + 2, 2);
+        g.fillRect(roadX, 0, 2, roadY + 2);
+        g.fillRect(roadX + rw - 2, 0, 2, roadY + 2);
+        g.fillRect(roadX, roadY + rw - 2, 2, h - roadY - rw + 2);
+        g.fillRect(roadX + rw - 2, roadY + rw - 2, 2, h - roadY - rw + 2);
 
-
-        // === LIGNES DISCONTINUES (hors intersection) ===
+        // Lignes discontinues
         int yMid = h / 2 - 2;
         for (int x = 0; x < w; x += (LIGNE_LONGUEUR + LIGNE_ESPACE)) {
             if (x + LIGNE_LONGUEUR < roadX || x > roadX + rw) {
@@ -93,39 +82,78 @@ public class PanneauSimulation extends JPanel {
             }
         }
 
-        // === INITIALISATION DES FEUX DE SIGNALISATION ===
+        // Initialisation des feux
         if (feux == null) {
-            // Position des feux aux coins des trottoirs
             feux = List.of(
-                new FeuSignalisation(roadX - tw, roadY - tw, true),  // Feu vert en haut à gauche
-                new FeuSignalisation(roadX + rw , roadY - tw, false),  // Feu rouge en haut à droite
-                new FeuSignalisation(roadX - tw, roadY + rw , false),  // Feu rouge en bas à gauche (ajusté)
-                new FeuSignalisation(roadX + rw , roadY + rw, true)  // Feu vert en bas à droite
+                new FeuSignalisation(roadX - tw, roadY - tw, true),
+                new FeuSignalisation(roadX + rw, roadY - tw, false),
+                new FeuSignalisation(roadX - tw, roadY + rw, false),
+                new FeuSignalisation(roadX + rw, roadY + rw, true)
             );
         }
 
-        // === DESSIN DES FEUX DE SIGNALISATION ===
+        // Dessin des feux
         for (FeuSignalisation feu : feux) {
-            feu.dessiner(g);  // Dessiner chaque feu
+            feu.dessiner(g);
         }
 
-        // === VÉHICULES ===
+        // Dessin des véhicules
         for (int i = 0; i < vehicules.size(); i++) {
             Vehicule v = vehicules.get(i);
-            int x = (int) v.getPosition().getAbscisse();
-            int y = (int) v.getPosition().getOrdonee();
+            Point p = centrerSurVoie(v);
 
-            // Générer une couleur unique pour chaque véhicule
-            float hue = (float) i / vehicules.size(); // Utiliser l'indice pour générer des couleurs distinctes
-            Color vehicleColor = Color.getHSBColor(hue, 1.0f, 1.0f); // Couleur en utilisant l'espace HSB
+            float hue = (float) i / vehicules.size();
+            Color vehicleColor = Color.getHSBColor(hue, 1.0f, 1.0f);
 
-            // Ombre sous les véhicules
-            g.setColor(new Color(0, 0, 0, 50));  // Ombre légèrement translucide
-            g.fillRect(x + 5, y + 5, (int) (v.getLongueur() * 10), (int) (v.getLargeur() * 10));
+            int width, height;
+            if (v.getDirection() == 0 || v.getDirection() == 1) {
+                width = (int) (v.getLargeur() * 10);
+                height = (int) (v.getLongueur() * 10);
+            } else {
+                width = (int) (v.getLongueur() * 10);
+                height = (int) (v.getLargeur() * 10);
+            }
 
-            // Dessin du véhicule avec une couleur unique
+            // Ombre
+            g.setColor(new Color(0, 0, 0, 50));
+            g.fillRect(p.x + 5, p.y + 5, width, height);
+
+            // Véhicule
             g.setColor(vehicleColor);
-            g.fillRect(x, y, (int) (v.getLongueur() * 10), (int) (v.getLargeur() * 10));
+            g.fillRect(p.x, p.y, width, height);
         }
+    }
+
+    /**
+     * Centre le véhicule sur la bonne voie selon sa direction.
+     * Retourne un Point contenant la position corrigée (x, y).
+     */
+    private Point centrerSurVoie(Vehicule v) {
+        int rw = ROUTE_WIDTH;
+        int w = getWidth();
+        int h = getHeight();
+
+        int roadX = (w - rw) / 2;
+        int roadY = (h - rw) / 2;
+
+        int x = (int) v.getPosition().getAbscisse();
+        int y = (int) v.getPosition().getOrdonee();
+
+        switch (v.getDirection()) {
+            case 0: // Bas
+                x = roadX + 12;
+                break;
+            case 1: // Haut
+                x = roadX + 64;
+                break;
+            case 2: // Gauche
+                y = roadY + 64;
+                break;
+            case 3: // Droite
+                y = roadY + 12;
+                break;
+        }
+
+        return new Point(x, y);
     }
 }

@@ -1,12 +1,3 @@
-/**
- * La classe Vehicule représente un véhicule sur la route avec ses caractéristiques principales.
- * Elle servira de superclasse pour différents types de véhicules (motos, voitures, poids-lourds).
- *
- *
- * Cette classe gère aussi l'accélération, le freinage et le déplacement.
- * 
- * @author Morain Arthur
- */
 public class Vehicule {
     /** La position du véhicule sur la route. */
     private Position position;
@@ -24,6 +15,8 @@ public class Vehicule {
     private final double acceleration;
     /** L'état du véhicule (true si en mouvement, false si arrêté). */
     private boolean enMouvement;
+    /** La direction du véhicule (0 = bas, 1 = haut, 2 = droite, 3 = gauche). */
+    private int direction;
 
     /**
      * Constructeur de la classe Vehicule.
@@ -43,6 +36,7 @@ public class Vehicule {
         this.acceleration = 2.0; // Valeur par défaut en m/s²
         this.enMouvement = false;
         this.conducteur = new Conducteur(); // Assigne un conducteur aléatoire
+        this.direction = 2; // Par défaut, direction vers la droite (0 = bas, 1 = haut, 2 = droite, 3 = gauche)
     }
 
     /**
@@ -120,6 +114,24 @@ public class Vehicule {
     }
 
     /**
+     * Déplace le véhicule spécifiquement sur l'axe X.
+     * @param deltaTemps Temps écoulé en secondes.
+     */
+    public void deplacerSurX(double deltaTemps) {
+        double deplacement = (vitesseActuelle * 1000 / 3600) * deltaTemps; // Conversion km/h en m/s
+        this.position.setAbscisse(this.position.getAbscisse() + deplacement);
+    }
+
+    /**
+     * Déplace le véhicule spécifiquement sur l'axe Y.
+     * @param deltaTemps Temps écoulé en secondes.
+     */
+    public void deplacerSurY(double deltaTemps) {
+        double deplacement = (vitesseActuelle * 1000 / 3600) * deltaTemps; // Conversion km/h en m/s
+        this.position.setOrdonee(this.position.getOrdonee() + deplacement);
+    }
+
+    /**
      * Freine le véhicule.
      * La vitesse ne peut pas être inférieure à 0 km/h.
      * @param decrement La réduction de vitesse en km/h.
@@ -132,38 +144,41 @@ public class Vehicule {
     }
 
     /**
-     * Déplace le véhicule en ligne droite sur l'axe X.
+     * Déplace le véhicule en fonction de la direction sur l'axe X ou Y.
      * @param deltaTemps Temps écoulé en secondes.
      */
-    public void deplacerSurX(double deltaTemps) {
+    public void deplacer(double deltaTemps) {
         double deplacement = (vitesseActuelle * 1000 / 3600) * deltaTemps; // Conversion km/h en m/s
-        this.position.setAbscisse(this.position.getAbscisse() + deplacement);
+        switch (direction) {
+            case 0: // Bas
+                this.position.setOrdonee(this.position.getOrdonee() + deplacement);
+                break;
+            case 1: // Haut
+                this.position.setOrdonee(this.position.getOrdonee() - deplacement);
+                break;
+            case 2: // Droite
+                this.position.setAbscisse(this.position.getAbscisse() + deplacement);
+                break;
+            case 3: // Gauche
+                this.position.setAbscisse(this.position.getAbscisse() - deplacement);
+                break;
+        }
     }
 
     /**
-     * Déplace le véhicule en ligne droite sur l'axe Y.
-     * @param deltaTemps Temps écoulé en secondes.
+     * Récupère la direction actuelle du véhicule.
+     * @return La direction actuelle du véhicule (0 = bas, 1 = haut, 2 = droite, 3 = gauche).
      */
-    public void deplacerSurY(double deltaTemps) {
-        double deplacement = (vitesseActuelle * 1000 / 3600) * deltaTemps;
-        this.position.setOrdonee(this.position.getOrdonee() + deplacement);
+    public int getDirection() {
+        return this.direction;
     }
 
     /**
-     * Déplace le véhicule en effectuant un virage selon un angle donné.
-     * Cette méthode suffit d'alleurs à remplacer les deux méthodes précédentes.
-     * @param deltaTemps Temps écoulé en secondes.
-     * @param angle Angle du virage en degrés (positif vers la droite, négatif vers la gauche).
+     * Modifie la direction du véhicule.
+     * @param direction La nouvelle direction à appliquer (0 = bas, 1 = haut, 2 = droite, 3 = gauche).
      */
-    public void deplacerEnVirage(double deltaTemps, double angle) {
-        double deplacement = (vitesseActuelle * 1000 / 3600) * deltaTemps;
-        double angleRad = Math.toRadians(angle); // Conversion en radians
-
-        double deltaX = deplacement * Math.cos(angleRad);
-        double deltaY = deplacement * Math.sin(angleRad);
-
-        this.position.setPosition(this.position.getAbscisse() + deltaX, this.position.getOrdonee() + deltaY);
-
+    public void setDirection(int direction) {
+        this.direction = direction;
     }
 
     /**
@@ -180,15 +195,8 @@ public class Vehicule {
                 "  Vitesse Actuelle: " + vitesseActuelle + " km/h\n" +
                 "  Accélération: " + acceleration + " m/s²\n" +
                 "  En mouvement: " + (enMouvement ? "Oui" : "Non") + "\n" +
+                "  Direction: " + (direction == 0 ? "Bas" : direction == 1 ? "Haut" : direction == 2 ? "Droite" : "Gauche") + "\n" +
                 "  Conducteur: " + this.conducteur.toString() + "\n" +
                 "}";
     }
 }
-
-
-
-
-
-
-
-

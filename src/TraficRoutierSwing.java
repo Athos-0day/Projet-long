@@ -13,39 +13,34 @@ public class TraficRoutierSwing extends JFrame {
     private int elapsedSeconds = 0;
     private JLabel timerLabel;
 
-    // Liste des véhicules
     private List<Vehicule> vehicules;
+    private PanneauSimulation panneau;
+    private GenerateurVehicule generateur;
 
     public TraficRoutierSwing() {
-        super("Simulation");
+        super("Simulation Trafic Routier");
 
-        // Définition du layout principal
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
 
-        // Panel des boutons
+        // === BOUTONS ===
         JPanel boutonsPanel1 = new JPanel(new GridLayout(4, 1, 5, 5));
-
-        // Création des boutons
         startButton = new JButton("Start");
         stopButton = new JButton("Stop");
         vitesseButton = new JButton("Vit.Sim");
         densiteButton = new JButton("Densite");
 
-        // Ajout des boutons au panel
         boutonsPanel1.add(startButton);
         boutonsPanel1.add(stopButton);
         boutonsPanel1.add(vitesseButton);
         boutonsPanel1.add(densiteButton);
 
-        // Wrapper vertical pour centrer les boutons et ne pas prendre toute la hauteur
         JPanel leftPanel = new JPanel(new GridBagLayout());
         GridBagConstraints leftGbc = new GridBagConstraints();
         leftGbc.gridy = 0;
         leftGbc.anchor = GridBagConstraints.NORTH;
         leftPanel.add(boutonsPanel1, leftGbc);
 
-        // Placement du panel gauche contenant les boutons
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.weightx = 0.2;
@@ -54,18 +49,16 @@ public class TraficRoutierSwing extends JFrame {
         gbc.insets = new Insets(10, 10, 10, 10);
         add(leftPanel, gbc);
 
-        // Panel principal de simulation avec un BorderLayout
+        // === PANEL SIMULATION ===
         JPanel simulationPanel = new JPanel(new BorderLayout());
         simulationPanel.setBackground(Color.LIGHT_GRAY);
         simulationPanel.setPreferredSize(new Dimension(800, 800));
 
-        // Affichage du temps écoulé
         timerLabel = new JLabel("Temps : 0 s", SwingConstants.RIGHT);
         timerLabel.setFont(new Font("Arial", Font.BOLD, 18));
         timerLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 20));
         simulationPanel.add(timerLabel, BorderLayout.NORTH);
 
-        // Placement du panel de simulation à droite
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.weightx = 0.8;
@@ -73,30 +66,34 @@ public class TraficRoutierSwing extends JFrame {
         gbc.fill = GridBagConstraints.BOTH;
         add(simulationPanel, gbc);
 
-        // === Création de la liste des véhicules ===
+        // === LOGIQUE SIMULATION ===
         vehicules = new ArrayList<>();
-        vehicules.add(new Voiture(0, 270));        // Voiture placée sur la route
-        vehicules.add(new DeuxRoues(50, 280));     // Deux-roues à une autre position
-        vehicules.add(new PoidsLourds(100, 260));  // Poids-lourds en haut de la route
+        generateur = new GenerateurVehicule(vehicules, this::getDensiteDelay);
 
-        // === Création du panneau de simulation ===
-        PanneauSimulation panneau = new PanneauSimulation(vehicules);
-
-        // Ajouter le panneau de simulation au simulationPanel
+        panneau = new PanneauSimulation(vehicules);
         simulationPanel.add(panneau, BorderLayout.CENTER);
 
-        // Timer pour gérer la simulation des véhicules
         simulationTimer = new Timer(simulationSpeed, e -> {
+            generateur.update(); // génération éventuelle de véhicules
+
             for (Vehicule v : vehicules) {
-                v.accelerer(0.1);       // Accélération simulée
-                v.deplacerSurX(0.1);    // Déplacement vers la droite
+                v.accelerer(0.1);
+                switch (v.getDirection()) {
+                    case 0 -> v.deplacerSurY(0.5);   // bas
+                    case 1 -> v.deplacerSurY(-0.5);  // haut
+                    case 2 -> v.deplacerSurX(0.5);   // droite
+                    case 3 -> v.deplacerSurX(-0.5);  // gauche
+                }
             }
-            panneau.repaint();          // Redessiner les véhicules à chaque itération
+
+            vehicules.removeIf(this::estHorsCadre);
+
+            panneau.repaint();
             elapsedSeconds++;
             timerLabel.setText("Temps : " + elapsedSeconds + " s");
         });
 
-        // Actions des boutons
+        // === ACTIONS BOUTONS ===
         startButton.addActionListener(e -> {
             simulationTimer.start();
             startButton.setEnabled(false);
@@ -118,27 +115,18 @@ public class TraficRoutierSwing extends JFrame {
                     JOptionPane.PLAIN_MESSAGE,
                     null,
                     options,
-                    options[0]
+                    "x1"
             );
 
             if (choix != null) {
-                boolean vitesseChangee = true;
-                if (choix.equals("x0.5")) {
-                    simulationSpeed = 1500;
-                } else if (choix.equals("x1")) {
-                    simulationSpeed = 1000;
-                } else if (choix.equals("x1.5")) {
-                    simulationSpeed = 666;
-                } else if (choix.equals("x2")) {
-                    simulationSpeed = 500;
-                } else if (choix.equals("x3")) {
-                    simulationSpeed = 333;
-                } else {
-                    vitesseChangee = false;
+                switch (choix) {
+                    case "x0.5" -> simulationSpeed = 1500;
+                    case "x1" -> simulationSpeed = 1000;
+                    case "x1.5" -> simulationSpeed = 666;
+                    case "x2" -> simulationSpeed = 500;
+                    case "x3" -> simulationSpeed = 333;
                 }
-                if (vitesseChangee) {
-                    simulationTimer.setDelay(simulationSpeed);
-                }
+                simulationTimer.setDelay(simulationSpeed);
             }
         });
 
@@ -151,7 +139,7 @@ public class TraficRoutierSwing extends JFrame {
                     JOptionPane.PLAIN_MESSAGE,
                     null,
                     options,
-                    options[1]
+                    densite
             );
 
             if (choix != null) {
@@ -160,13 +148,29 @@ public class TraficRoutierSwing extends JFrame {
             }
         });
 
-        stopButton.setEnabled(false); // désactiver Stop au départ
+        stopButton.setEnabled(false);
 
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         pack();
         setSize(1200, 800);
         setVisible(true);
+    }
+
+    private boolean estHorsCadre(Vehicule v) {
+        int x = (int) v.getPosition().getAbscisse();
+        int y = (int) v.getPosition().getOrdonee();
+        return (x < -100 || x > 1000 || y < -100 || y > 1000);
+    }
+
+    private int getDensiteDelay() {
+        return switch (densite) {
+            case "Faible" -> 3000;
+            case "Moyenne" -> 2000;
+            case "Élevée" -> 1000;
+            case "Très Élevée" -> 500;
+            default -> 2000;
+        };
     }
 
     public static void main(String[] args) {
