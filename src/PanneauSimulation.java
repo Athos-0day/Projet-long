@@ -105,22 +105,7 @@ public class PanneauSimulation extends JPanel {
             float hue = (float) i / vehicules.size();
             Color vehicleColor = Color.getHSBColor(hue, 1.0f, 1.0f);
 
-            int width, height;
-            if (v.getDirection() == 0 || v.getDirection() == 1) {
-                width = (int) (v.getLargeur() * 10);
-                height = (int) (v.getLongueur() * 10);
-            } else {
-                width = (int) (v.getLongueur() * 10);
-                height = (int) (v.getLargeur() * 10);
-            }
-
-            // Ombre
-            g.setColor(new Color(0, 0, 0, 50));
-            g.fillRect(p.x + 5, p.y + 5, width, height);
-
-            // Véhicule
-            g.setColor(vehicleColor);
-            g.fillRect(p.x, p.y, width, height);
+            v.dessiner(g, p, vehicleColor);
         }
     }
 

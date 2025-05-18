@@ -1,3 +1,9 @@
+import java.awt.*;
+/** La classe véhicule permet de définir le comportement d'un véhicule.
+ * 
+ * @author Arthur Morain
+ */
+
 public class Vehicule {
     /** La position du véhicule sur la route. */
     private Position position;
@@ -179,6 +185,44 @@ public class Vehicule {
      */
     public void setDirection(int direction) {
         this.direction = direction;
+    }
+
+    /** 
+     * Modifie la vitesse du véhicule.
+     * @param vitesse La nouvelle vistesse
+     */
+    public void setVitesse(double vitesse) {
+        this.vitesseActuelle = Math.max(0, Math.min(vitesse, this.vitesseMax)); // Empêche vitesse > 50 ou < 0
+    }
+
+
+    /**
+     * Dessine le véhicule à l'écran à partir d'une position centrée, avec une couleur donnée.
+     *
+     * @param g L'objet Graphics utilisé pour le rendu.
+     * @param positionCentrée La position centrée du véhicule sur la voie.
+     * @param couleur La couleur utilisée pour dessiner le véhicule.
+     */
+    public void dessiner(Graphics g, Point positionCentrée, Color couleur) {
+        int pixelLongueur = (int) (this.longueur * 10);
+        int pixelLargeur = (int) (this.largeur * 10);
+
+        int width, height;
+        if (direction == 0 || direction == 1) {
+            width = pixelLargeur;
+            height = pixelLongueur;
+        } else {
+            width = pixelLongueur;
+            height = pixelLargeur;
+        }
+
+        // Ombre
+        g.setColor(new Color(0, 0, 0, 50));
+        g.fillRect(positionCentrée.x + 5, positionCentrée.y + 5, width, height);
+
+        // Véhicule
+        g.setColor(couleur);
+        g.fillRect(positionCentrée.x, positionCentrée.y, width, height);
     }
 
     /**

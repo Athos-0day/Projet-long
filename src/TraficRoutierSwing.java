@@ -77,7 +77,6 @@ public class TraficRoutierSwing extends JFrame {
             generateur.update(); // génération éventuelle de véhicules
 
             for (Vehicule v : vehicules) {
-                v.accelerer(0.1);
                 switch (v.getDirection()) {
                     case 0 -> v.deplacerSurY(0.5);   // bas
                     case 1 -> v.deplacerSurY(-0.5);  // haut
@@ -165,11 +164,11 @@ public class TraficRoutierSwing extends JFrame {
 
     private int getDensiteDelay() {
         return switch (densite) {
-            case "Faible" -> 3000;
-            case "Moyenne" -> 2000;
-            case "Élevée" -> 1000;
-            case "Très Élevée" -> 500;
-            default -> 2000;
+            case "Faible" -> 5000;
+            case "Moyenne" -> 4000;
+            case "Élevée" -> 2500;
+            case "Très Élevée" -> 1500;
+            default -> 4000;
         };
     }
 
