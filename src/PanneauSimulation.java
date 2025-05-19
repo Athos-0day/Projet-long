@@ -85,10 +85,10 @@ public class PanneauSimulation extends JPanel {
         // Initialisation des feux
         if (feux == null) {
             feux = List.of(
-                new FeuSignalisation(roadX - tw, roadY - tw, true),
-                new FeuSignalisation(roadX + rw, roadY - tw, false),
-                new FeuSignalisation(roadX - tw, roadY + rw, false),
-                new FeuSignalisation(roadX + rw, roadY + rw, true)
+                new FeuSignalisation(roadX - tw, roadY - tw, true,3),
+                new FeuSignalisation(roadX + rw, roadY - tw, false,2),
+                new FeuSignalisation(roadX - tw, roadY + rw, false, 0),
+                new FeuSignalisation(roadX + rw, roadY + rw, true, 1)
             );
         }
 
@@ -140,5 +140,13 @@ public class PanneauSimulation extends JPanel {
         }
 
         return new Point(x, y);
+    }
+
+    /** Méthode pour récupérer la liste des feux.
+     * 
+     * @return la liste des feux
+     */
+    public List<FeuSignalisation> getFeux() {
+        return feux;
     }
 }

@@ -96,13 +96,53 @@ public class TraficRoutierSwing extends JFrame {
             generateur.update(); // génération éventuelle de véhicules
 
             for (Vehicule v : vehicules) {
-                switch (v.getDirection()) {
-                    case 0 -> v.deplacerSurY(0.5);   // bas
-                    case 1 -> v.deplacerSurY(-0.5);  // haut
-                    case 2 -> v.deplacerSurX(0.5);   // droite
-                    case 3 -> v.deplacerSurX(-0.5);  // gauche
+                boolean doitSArreter = false;
+
+                for (FeuSignalisation feu : panneau.getFeux()) {
+                    if (!feu.estVert()) {
+                        double[] positionAvant = getPositionAvantVehicule(v);
+                        double vx = positionAvant[0];
+                        double vy = positionAvant[1];
+                        double fx = feu.getPosition().getAbscisse();
+                        double fy = feu.getPosition().getOrdonee();
+                        double marge = 10; // Distance de sécurité (en mètres)
+
+                        switch (v.getDirection()) {
+                            case 0: // Bas
+                                if (vy < fy && (fy - vy) <= marge) {
+                                    doitSArreter = true;
+                                }
+                                break;
+                            case 1: // Haut
+                                if (vy > fy && (vy - fy) <= marge) {
+                                    doitSArreter = true;
+                                }
+                                break;
+                            case 2: // Droite
+                                if (vx < fx && (fx - vx) <= marge) {
+                                    doitSArreter = true;
+                                }
+                                break;
+                            case 3: // Gauche
+                                if (vx > fx && (vx - fx) <= marge) {
+                                    doitSArreter = true;
+                                }
+                                break;
+                        }
+
+                        if (doitSArreter) {
+                            v.setVitesse(0); 
+                        }
+                    }
                 }
+
+            // Si pas d'obstacle, accélère
+            if (!doitSArreter) {
+                v.setVitesse(70); // 0.1 seconde par tick par exemple
             }
+
+            v.deplacer(0.1);
+        }
 
             //Suppression des véhicules hors cadre et incrémentation.
             vehicules.removeIf(v -> {
@@ -199,6 +239,30 @@ public class TraficRoutierSwing extends JFrame {
             case "Très Élevée" -> 1500;
             default -> 4000;
         };
+    }
+
+    /**
+     * Calcule la position de l'avant du véhicule selon sa direction. (en terme de pixels)
+     * @param v Le véhicule concerné.
+     * @return Un tableau [x, y] correspondant à la position avant du véhicule.
+     */
+    public static double[] getPositionAvantVehicule(Vehicule v) {
+        double x = v.getPosition().getAbscisse();
+        double y = v.getPosition().getOrdonee();
+        double demiLongueur = v.getLongueur() / 2;
+
+        switch (v.getDirection()) {
+            case 0: // Bas
+                return new double[]{x, y + demiLongueur * 10};
+            case 1: // Haut
+                return new double[]{x, y - demiLongueur * 10};
+            case 2: // Droite
+                return new double[]{x + demiLongueur *10, y};
+            case 3: // Gauche
+                return new double[]{x - demiLongueur * 10 , y};
+            default:
+                return new double[]{x, y};
+        }
     }
 
     public static void main(String[] args) {
