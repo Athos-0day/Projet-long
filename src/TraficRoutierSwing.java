@@ -17,6 +17,12 @@ public class TraficRoutierSwing extends JFrame {
     private PanneauSimulation panneau;
     private GenerateurVehicule generateur;
 
+    //Attributs pour les affichage des véhicules présents passés
+    private JLabel vehiculesPresentsLabel;
+    private JLabel vehiculesPassesLabel;
+    private int vehiculesPassesCount = 0;
+
+    /** contructeur de l'interface graphique. */
     public TraficRoutierSwing() {
         super("Simulation Trafic Routier");
 
@@ -54,10 +60,23 @@ public class TraficRoutierSwing extends JFrame {
         simulationPanel.setBackground(Color.LIGHT_GRAY);
         simulationPanel.setPreferredSize(new Dimension(800, 800));
 
-        timerLabel = new JLabel("Temps : 0 s", SwingConstants.RIGHT);
-        timerLabel.setFont(new Font("Arial", Font.BOLD, 18));
-        timerLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 20));
-        simulationPanel.add(timerLabel, BorderLayout.NORTH);
+        // === Panel affichage valeurs ===
+        JPanel topInfoPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        timerLabel = new JLabel("Temps : 0 s");
+        vehiculesPresentsLabel = new JLabel("Présent : 0");
+        vehiculesPassesLabel = new JLabel("Passés : 0");
+
+        Font infoFont = new Font("Arial", Font.BOLD, 18);
+        timerLabel.setFont(infoFont);
+        vehiculesPresentsLabel.setFont(infoFont);
+        vehiculesPassesLabel.setFont(infoFont);
+
+        topInfoPanel.add(vehiculesPresentsLabel);
+        topInfoPanel.add(Box.createHorizontalStrut(20));
+        topInfoPanel.add(vehiculesPassesLabel);
+        topInfoPanel.add(Box.createHorizontalStrut(20));
+        topInfoPanel.add(timerLabel);
+        simulationPanel.add(topInfoPanel, BorderLayout.NORTH);
 
         gbc.gridx = 1;
         gbc.gridy = 0;
@@ -85,10 +104,20 @@ public class TraficRoutierSwing extends JFrame {
                 }
             }
 
-            vehicules.removeIf(this::estHorsCadre);
+            //Suppression des véhicules hors cadre et incrémentation.
+            vehicules.removeIf(v -> {
+                if (estHorsCadre(v)) {
+                    vehiculesPassesCount++;
+                    return true;
+                }
+                return false;
+            });
 
+            //Mise à jour des panneaux
             panneau.repaint();
             elapsedSeconds++;
+            vehiculesPresentsLabel.setText("Présents : " + vehicules.size());
+            vehiculesPassesLabel.setText("Passés : " + vehiculesPassesCount);
             timerLabel.setText("Temps : " + elapsedSeconds + " s");
         });
 
