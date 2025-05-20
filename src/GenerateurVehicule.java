@@ -8,7 +8,7 @@ public class GenerateurVehicule {
     private final Supplier<Integer> densiteDelayProvider;
     private final Random random;
     private long lastGenerationTime;
-    private static final int VITESSE_INITIALE = 70;
+    private static final int VITESSE_INITIALE = 210;
     private static final int DISTANCE_SECURITE = 100;
 
     public GenerateurVehicule(List<Vehicule> vehicules, Supplier<Integer> densiteDelayProvider) {

@@ -19,7 +19,7 @@ public class PanneauSimulation extends JPanel {
         setPreferredSize(new Dimension(800, 800));
         setBackground(new Color(34, 139, 34)); // Vert herbe
 
-        feuTimer = new Timer(5000, new ActionListener() {
+        feuTimer = new Timer(10000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 for (FeuSignalisation feu : feux) {
@@ -87,8 +87,8 @@ public class PanneauSimulation extends JPanel {
             feux = List.of(
                 new FeuSignalisation(roadX - tw, roadY - tw, true,3),
                 new FeuSignalisation(roadX + rw, roadY - tw, false,2),
-                new FeuSignalisation(roadX - tw, roadY + rw, false, 0),
-                new FeuSignalisation(roadX + rw, roadY + rw, true, 1)
+                new FeuSignalisation(roadX - tw, roadY + rw, false, 1),
+                new FeuSignalisation(roadX + rw, roadY + rw, true, 0)
             );
         }
 

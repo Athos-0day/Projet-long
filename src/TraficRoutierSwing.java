@@ -106,25 +106,26 @@ public class TraficRoutierSwing extends JFrame {
                         double fx = feu.getPosition().getAbscisse();
                         double fy = feu.getPosition().getOrdonee();
                         double marge = 20; // Distance de sécurité (en mètres)
+                        int directionFeu = feu.getDirection();
 
                         switch (v.getDirection()) {
                             case 0: // Bas
-                                if (vy < fy && (fy - vy) <= marge) {
+                                if (vy < fy && (fy - vy) <= marge && directionFeu == 3) {
                                     doitSArreter = true;
                                 }
                                 break;
                             case 1: // Haut
-                                if (vy > fy && (vy - fy) <= marge) {
+                                if (vy > fy && (vy - fy) <= marge && directionFeu == 0) {
                                     doitSArreter = true;
                                 }
                                 break;
                             case 2: // Droite
-                                if (vx < fx && (fx - vx) <= marge) {
+                                if (vx < fx && (fx - vx) <= marge && directionFeu == 1) {
                                     doitSArreter = true;
                                 }
                                 break;
                             case 3: // Gauche
-                                if (vx > fx && (vx - fx) <= marge) {
+                                if (vx > fx && (vx - fx) <= marge && directionFeu == 2) {
                                     doitSArreter = true;
                                 }
                                 break;
@@ -136,13 +137,13 @@ public class TraficRoutierSwing extends JFrame {
                     }
                 }
 
-            // Si pas d'obstacle, accélère
-            if (!doitSArreter) {
-                v.setVitesse(70); // 0.1 seconde par tick par exemple
-            }
+                // Si pas d'obstacle, accélère
+                if (!doitSArreter) {
+                    v.setVitesse(210); // 0.1 seconde par tick par exemple
+                }
 
-            v.deplacer(0.1);
-        }
+                v.deplacer(0.1);
+            }
 
             //Suppression des véhicules hors cadre et incrémentation.
             vehicules.removeIf(v -> {
