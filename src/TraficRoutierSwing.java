@@ -105,7 +105,7 @@ public class TraficRoutierSwing extends JFrame {
                         double vy = positionAvant[1];
                         double fx = feu.getPosition().getAbscisse();
                         double fy = feu.getPosition().getOrdonee();
-                        double marge = 10; // Distance de sécurité (en mètres)
+                        double marge = 20; // Distance de sécurité (en mètres)
 
                         switch (v.getDirection()) {
                             case 0: // Bas
@@ -253,13 +253,13 @@ public class TraficRoutierSwing extends JFrame {
 
         switch (v.getDirection()) {
             case 0: // Bas
-                return new double[]{x, y + demiLongueur * 10};
+                return new double[]{x, y + demiLongueur};
             case 1: // Haut
-                return new double[]{x, y - demiLongueur * 10};
+                return new double[]{x, y - demiLongueur};
             case 2: // Droite
-                return new double[]{x + demiLongueur *10, y};
+                return new double[]{x + demiLongueur , y};
             case 3: // Gauche
-                return new double[]{x - demiLongueur * 10 , y};
+                return new double[]{x - demiLongueur  , y};
             default:
                 return new double[]{x, y};
         }
