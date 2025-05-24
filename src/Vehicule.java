@@ -1,8 +1,9 @@
-import java.awt.*;
 /** La classe véhicule permet de définir le comportement d'un véhicule.
  * 
  * @author Arthur Morain
  */
+
+import java.awt.*;
 
 public class Vehicule {
     /** La position du véhicule sur la route. */
@@ -192,7 +193,7 @@ public class Vehicule {
      * @param vitesse La nouvelle vistesse
      */
     public void setVitesse(double vitesse) {
-        this.vitesseActuelle = Math.max(0, Math.min(vitesse, this.vitesseMax)); // Empêche vitesse > 50 ou < 0
+        this.vitesseActuelle = Math.max(0, vitesse); // Empêche vitesse > 50 ou < 0
     }
 
 

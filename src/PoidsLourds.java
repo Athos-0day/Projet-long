@@ -4,6 +4,7 @@
  * 
  * @author Arthur Morain
  */
+
 public class PoidsLourds extends Vehicule {
 
     // Définition des constantes spécifiques pour les poids-lourds

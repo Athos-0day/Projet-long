@@ -95,6 +95,8 @@ public class TraficRoutierSwing extends JFrame {
         simulationTimer = new Timer(simulationSpeed, e -> {
             generateur.update(); // génération éventuelle de véhicules
 
+            GestionCollision.gererCollisions(vehicules);
+
             for (Vehicule v : vehicules) {
                 boolean doitSArreter = false;
 

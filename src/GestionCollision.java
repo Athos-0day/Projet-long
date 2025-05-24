@@ -17,9 +17,8 @@ public class GestionCollision {
     /** La méthode permet d'éviter les cas de collisions.
      * 
      * @param vehicules la liste des véhicules
-     * @param deltaTemps la variation de temps
      */
-    public static void gererCollisions(List<Vehicule> vehicules, double deltaTemps) {
+    public static void gererCollisions(List<Vehicule> vehicules) {
 
         //On parcourt tous les véhicules de la liste 
         for (int i = 0; i < vehicules.size(); i++) {

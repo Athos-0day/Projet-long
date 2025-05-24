@@ -5,6 +5,7 @@
  *
  * @author Morain Arthur
  */
+
 public class Position {
     /** Coordonnée en X (mètres). */
     private double abscisse;

@@ -1,3 +1,8 @@
+/** La classe permet de dessiner l'intersection dans la simulation.
+ * 
+ * @author Arthur Morain
+ */
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,7 +24,7 @@ public class PanneauSimulation extends JPanel {
         setPreferredSize(new Dimension(800, 800));
         setBackground(new Color(34, 139, 34)); // Vert herbe
 
-        feuTimer = new Timer(10000, new ActionListener() {
+        feuTimer = new Timer(15000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 for (FeuSignalisation feu : feux) {
