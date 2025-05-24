@@ -1,10 +1,13 @@
-import java.util.List;
-
 /** La classe permet de mettre en place
  *  la gestion des collisions.
+ *  elle ne gère que les collisions 
+ *  dans la même direction pour le moment.
  * 
  *  @author Morain Arthur
  */
+
+import java.util.List;
+
 public class GestionCollision {
 
     /** Défiinition d'une constante pour la distance de sécurité. */
@@ -33,7 +36,7 @@ public class GestionCollision {
                 if (j != i) {
                     Vehicule v2 = vehicules.get(j);
                     //Vérification de la voie et de la direction
-                    if (v1.getDirection() == v2.getDirection() && estAligneSurVoie(v1, v2)) {
+                    if (v1.getDirection() == v2.getDirection()) {
                         double distance = calculerDistance(v1, v2);
                         if (estDevant(v1, v2) && distance < minDistance) {
                             minDistance = distance;
@@ -48,27 +51,13 @@ public class GestionCollision {
             //Décision d'arrêt ou de ralentissement 
             if (plusProcheDevant != null) {
                 if (minDistance < 2.0) {
-                    v1.freiner(v1.getVitesseActuelle()); // arrêt complet
+                    v1.setVitesse(0); // arrêt complet
                 } else if (minDistance < DISTANCE_SECURITE) {
                     v1.freiner(5.0); // freine modérément
                 }
             } else {
-                v1.accelerer(deltaTemps); // personne devant : accélère normalement
+                v1.setVitesse(GenerateurVehicule.VITESSE_INITIALE); // personne devant : accélère normalement
             }
-        }
-    }
-
-    /** La méthode permet de vérifier que deux véhicules sont alignés 
-     *  sur la même voie
-     *  @param v1 le premier véhicule
-     *  @param v2 le deuxième véhicule
-     *  @return vrai s'ils sont sur la même voie, faux sinon
-     */
-    private static boolean estAligneSurVoie(Vehicule v1, Vehicule v2) {
-        if (v1.getDirection() == 0 || v1.getDirection() == 1) {
-            return Math.abs(v1.getPosition().getAbscisse() - v2.getPosition().getAbscisse()) < 1.0;
-        } else {
-            return Math.abs(v1.getPosition().getOrdonee() - v2.getPosition().getOrdonee()) < 1.0;
         }
     }
 

@@ -7,7 +7,7 @@ public class ConducteurException extends RuntimeException {
     
     /**
      * Constructeur avec un message personnalisé.
-     * @param message Le message décrivant l'erreur.
+     * @param message Le message d'erreur.
      */
     public ConducteurException(String message) {
         super(message);

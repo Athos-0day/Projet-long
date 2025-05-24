@@ -3,17 +3,15 @@
  * @author Saadi Mohamed et Fatihi Abderrahman et Arthur Morain
  */
 
-
-// Classe FeuSignalisation qui implémente l'interface Signalisation
 import java.awt.Color;
 import java.awt.Graphics;
 
 public class FeuSignalisation {
     /** Position du feu de signalisation. */
     private int x, y;
-    /** Etat du feu (vert ou rouge) */
+    /** Etat du feu (vert ou rouge). */
     private boolean estVert;
-    /**Direction du feu (similaire aux véhicules) */
+    /**Direction du feu (similaire aux véhicules). */
     private int direction;
 
     public FeuSignalisation(int x, int y, boolean estVert, int direction) {
@@ -39,6 +37,10 @@ public class FeuSignalisation {
         return this.direction;
     }
 
+    /** Méthode permettant de dessiner un feu dans la simulation.
+     * 
+     * @param g là où on fait le dessin
+     */
     public void dessiner(Graphics g) {
         // Taille du feu de signalisation
         int taille = 20;
@@ -54,6 +56,10 @@ public class FeuSignalisation {
         g.fillOval(x, y, taille, taille);  // Dessiner un cercle pour le feu de signalisation
     }
 
+    /** Méthode permettant de vérifier que le feu est au vert.
+     * 
+     * @return true si le feu est vert
+     */
     public boolean estVert() {
         return estVert;
     }

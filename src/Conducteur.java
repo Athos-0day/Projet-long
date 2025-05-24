@@ -1,7 +1,6 @@
-import java.util.Random;
-
 /**
  * La classe Conducteur modélise le comportement d'un conducteur sur la route.
+ * (Ces paramètres ne servent pas dans la version de simulation actuelle)
  * Chaque conducteur possède des caractéristiques influençant ses décisions :
  * - Prudence : impacte la distance de sécurité et la probabilité de dépasser.
  * - Agressivité : détermine la tendance à prendre des risques.
@@ -14,6 +13,8 @@ import java.util.Random;
  * 
  * @author Arthur Morain
  */
+
+import java.util.Random;
 
 public class Conducteur {
     /**La prudence du conducteur.*/
@@ -28,7 +29,7 @@ public class Conducteur {
     private final Random random;
 
     /**La constante du temps minimum de réaction */
-    final static double TEMPS_REACT_MIN = 0.5;
+    private final static double TEMPS_REACT_MIN = 0.5;
 
     /**
      * Constructeur par défaut générant un conducteur avec des caractéristiques aléatoires,
@@ -118,7 +119,7 @@ public class Conducteur {
 
         
         if (this.agressivite > 0.6 && this.prudence < 0.3) {
-            return random.nextDouble() < 0.8; // La probabilité que le conducteur agressif dépasse est importante
+            return random.nextDouble() < 0.8; // La probabilité que le conducteur agressif dépasse est plus importante que les autres
         }
 
         else if (this.prudence > 0.6) {

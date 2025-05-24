@@ -1,14 +1,24 @@
+/** Classe permettant de générer les véhiules dans la 
+ * simulation.
+ * 
+ * @author Arthur Morain
+ */
+
 import java.util.List;
 import java.util.Random;
 import java.util.function.Supplier;
 
 public class GenerateurVehicule {
 
+    /**La liste contenant les véhicules. */
     private final List<Vehicule> vehicules;
+
     private final Supplier<Integer> densiteDelayProvider;
     private final Random random;
     private long lastGenerationTime;
-    private static final int VITESSE_INITIALE = 210;
+
+    /** Les constantes de la simulation. */
+    public static final int VITESSE_INITIALE = 210;
     private static final int DISTANCE_SECURITE = 100;
 
     public GenerateurVehicule(List<Vehicule> vehicules, Supplier<Integer> densiteDelayProvider) {
@@ -18,6 +28,7 @@ public class GenerateurVehicule {
         this.lastGenerationTime = System.currentTimeMillis();
     }
 
+    /** Met à jour la simulation en ajoutant un véhicule ou non. */
     public void update() {
         long currentTime = System.currentTimeMillis();
         int delay = densiteDelayProvider.get();
@@ -38,6 +49,12 @@ public class GenerateurVehicule {
         }
     }
 
+    /** La méthode permet de créer un véhicule aléatoire
+     *  le type : voiture, poids lours ou deux roues
+     *  mais aussi les paramètres de direction...
+     * 
+     *  @return le véhicule généré aléatoirement
+     */
     private Vehicule creerVehiculeAleatoire() {
         int direction = random.nextInt(4); // 0 = bas, 1 = haut, 2 = droite, 3 = gauche
         int centreX = 400;
@@ -66,6 +83,12 @@ public class GenerateurVehicule {
         return vehicule;
     }
 
+    /** Permet de vérifier que l'on peut ajouter un véhicule sur la route
+     * correspondante. (évite les superpositions au départ)
+     * 
+     * @param nouveau le nouveau véhicule que l'on souhaite ajouter
+     * @return vrai si l'on peut ajouter le véhicule
+     */
     private boolean entreeLibrePour(Vehicule nouveau) {
         double nx = nouveau.getPosition().getAbscisse();
         double ny = nouveau.getPosition().getOrdonee();
