@@ -1,11 +1,12 @@
-import org.junit.*;
-import static org.junit.Assert.*;
-
 /**
  * Classe de test de la classe PoidsLourds
  * 
  * @author Arthur Morain
  */
+
+import org.junit.*;
+import static org.junit.Assert.*;
+
 public class PoidsLourdsTest {
 
     private PoidsLourds poidsLourds;

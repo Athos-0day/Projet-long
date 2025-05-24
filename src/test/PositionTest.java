@@ -1,11 +1,12 @@
-import org.junit.*;
-import static org.junit.Assert.*;
-
 /**
  * Classe de test pour la classe Position.
  * 
  * @author Morain Arthur
  */
+
+import org.junit.*;
+import static org.junit.Assert.*;
+
 public class PositionTest {
 
     private Position position;

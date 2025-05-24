@@ -1,12 +1,13 @@
-import org.junit.*;
-import static org.junit.Assert.*;
-
 /**
  * Classe de test pour la classe Voiture.
  * Ce test vérifie l'initialisation des propriétés du constructeur.
  * 
  * @author Arthur Morains
  */
+
+import org.junit.*;
+import static org.junit.Assert.*;
+
 public class VoitureTest {
 
     private Voiture voiture;

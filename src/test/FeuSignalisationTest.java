@@ -1,9 +1,12 @@
+/**
+ * Application simple pour afficher le feu de signalisation.
+ * 
+ *  @author Arthur Morain
+ */
+
 import java.awt.*;
 import javax.swing.*;
 
-/**
- * Application simple pour afficher le feu de signalisation.
- */
 public class FeuSignalisationTest extends JFrame {
 
     private FeuSignalisation feu;

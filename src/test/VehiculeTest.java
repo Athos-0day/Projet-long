@@ -1,10 +1,11 @@
-import org.junit.*;
-import static org.junit.Assert.*;
-
 /**
  * Classe de test pour la classe Vehicule.
  * @author Morain Arthur
  */
+
+import org.junit.*;
+import static org.junit.Assert.*;
+
 public class VehiculeTest {
 
     private Vehicule vehicule;

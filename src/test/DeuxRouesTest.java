@@ -1,12 +1,13 @@
-import org.junit.*;
-import static org.junit.Assert.*;
-
 /**
  * Classe de test pour la classe DeuxRoues.
  * vérifie le bon fonctionnement du constructeur.
  * 
  * @author Arthur Morain
  */
+
+import org.junit.*;
+import static org.junit.Assert.*;
+
 public class DeuxRouesTest {
 
     private DeuxRoues deuxRoues;
