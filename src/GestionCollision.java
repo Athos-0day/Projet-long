@@ -11,7 +11,7 @@ import java.util.List;
 public class GestionCollision {
 
     /** Défiinition d'une constante pour la distance de sécurité. */
-    private static final double DISTANCE_SECURITE = 5.0;
+    private static final double DISTANCE_SECURITE = 20.0;
 
 
     /** La méthode permet d'éviter les cas de collisions.
@@ -37,7 +37,7 @@ public class GestionCollision {
                     //Vérification de la voie et de la direction
                     if (v1.getDirection() == v2.getDirection()) {
                         double distance = calculerDistance(v1, v2);
-                        if (estDevant(v1, v2) && distance < minDistance) {
+                        if (distance < minDistance) {
                             minDistance = distance;
                             plusProcheDevant = v2;
                         }
@@ -78,15 +78,23 @@ public class GestionCollision {
     }
 
     /**
-     * Calcule la distance euclidienne entre deux véhicules.
+     * Calcule la distance entre deux véhicules selon l'axe de déplacement.
      *
      * @param v1 Le premier véhicule
      * @param v2 Le second véhicule
-     * @return La distance en mètres
+     * @return La distance en mètres (sur un seul axe)
      */
     private static double calculerDistance(Vehicule v1, Vehicule v2) {
-        double dx = v1.getPosition().getAbscisse() - v2.getPosition().getAbscisse();
-        double dy = v1.getPosition().getOrdonee() - v2.getPosition().getOrdonee();
-        return Math.sqrt(dx * dx + dy * dy);
+        switch (v1.getDirection()) {
+            case 0: // bas
+            case 1: // haut
+                return Math.abs(v1.getPosition().getOrdonee() - v2.getPosition().getOrdonee());
+            case 2: // droite
+            case 3: // gauche
+                return Math.abs(v1.getPosition().getAbscisse() - v2.getPosition().getAbscisse());
+            default:
+                return Double.MAX_VALUE; // sécurité en cas de direction inconnue
+        }
     }
+
 }
