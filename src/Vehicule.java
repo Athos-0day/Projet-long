@@ -11,9 +11,9 @@ public class Vehicule {
     /** Le conducteur du véhicule. */
     private final Conducteur conducteur;
     /** La longueur du véhicule en mètres. */
-    private final double longueur;
+    protected final double longueur;
     /** La largeur du véhicule en mètres. */
-    private final double largeur;
+    protected final double largeur;
     /** La vitesse maximale du véhicule en km/h. */
     private final double vitesseMax;
     /** La vitesse actuelle du véhicule en km/h. */
@@ -23,7 +23,7 @@ public class Vehicule {
     /** L'état du véhicule (true si en mouvement, false si arrêté). */
     private boolean enMouvement;
     /** La direction du véhicule (0 = bas, 1 = haut, 2 = droite, 3 = gauche). */
-    private int direction;
+    protected int direction;
 
     /**
      * Constructeur de la classe Vehicule.
