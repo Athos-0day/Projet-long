@@ -23,9 +23,9 @@ public class PoidsLourds extends Vehicule {
 
     // Chemins vers les images des poids-lourds
     private static final String[] IMAGE_PATHS = {
-        "ressources/images/camion_bleu.png",
-        "ressources/images/camion_vert.png",
-        "ressources/images/camion_rouge.png"
+        "images/camion_bleu.png",
+        "images/camion_vert.png",
+        "images/camion_rouge.png"
     };
 
     /**
