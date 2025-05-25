@@ -7,6 +7,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 import java.awt.Color;
+import java.util.List;
 
 public class FeuSignalisation {
     /** Position du feu de signalisation. */
