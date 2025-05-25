@@ -41,19 +41,19 @@ public class PanneauSimulation extends JPanel {
         setBackground(new Color(34, 139, 34)); // Vert herbe
 
         // Charger les images de décor
-        decorHautGauche = new ImageIcon("ressources/images/Mcdo.png").getImage();
-        decorHautGauche2 = new ImageIcon("ressources/images/arbre2.png").getImage();
-        decorHautDroite = new ImageIcon("ressources/images/immeuble.png").getImage();
-        decorHautDroite2 = new ImageIcon("ressources/images/immeuble.png").getImage();
-        decorBasGauche = new ImageIcon("ressources/images/maison.png").getImage();
-        decorBasGauche2 = new ImageIcon("ressources/images/maison.png").getImage();
-        decorBasGauche3 = new ImageIcon("ressources/images/maison.png").getImage();
-        decorBasGauche4 = new ImageIcon("ressources/images/arbre1.png").getImage();
-        decorBasGauche5 = new ImageIcon("ressources/images/arbre2.png").getImage();
-        decorBasGauche6 = new ImageIcon("ressources/images/arbre1.png").getImage();
-        decorBasDroite = new ImageIcon("ressources/images/tour.png").getImage();
-        decorBasDroite2 = new ImageIcon("ressources/images/arbre2.png").getImage();
-        decorBasDroite3 = new ImageIcon("ressources/images/arbre2.png").getImage();
+        decorHautGauche = new ImageIcon("images/Mcdo.png").getImage();
+        decorHautGauche2 = new ImageIcon("images/arbre2.png").getImage();
+        decorHautDroite = new ImageIcon("images/immeuble.png").getImage();
+        decorHautDroite2 = new ImageIcon("images/immeuble.png").getImage();
+        decorBasGauche = new ImageIcon("images/maison.png").getImage();
+        decorBasGauche2 = new ImageIcon("images/maison.png").getImage();
+        decorBasGauche3 = new ImageIcon("images/maison.png").getImage();
+        decorBasGauche4 = new ImageIcon("images/arbre1.png").getImage();
+        decorBasGauche5 = new ImageIcon("images/arbre2.png").getImage();
+        decorBasGauche6 = new ImageIcon("images/arbre1.png").getImage();
+        decorBasDroite = new ImageIcon("images/tour.png").getImage();
+        decorBasDroite2 = new ImageIcon("images/arbre2.png").getImage();
+        decorBasDroite3 = new ImageIcon("images/arbre2.png").getImage();
 
         feuTimer = new Timer(10000, new ActionListener() {
             @Override
