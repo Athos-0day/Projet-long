@@ -24,9 +24,9 @@ public class DeuxRoues extends Vehicule {
 
     // Chemins vers les images des deux-roues
     private static final String[] IMAGE_PATHS = {
-        "ressources/images/moto_bleu.png",
-        "ressources/images/moto_vert.png",
-        "ressources/images/moto_rouge.png"
+        "images/moto_bleu.png",
+        "images/moto_vert.png",
+        "images/moto_rouge.png"
     };
 
     /**
