@@ -227,6 +227,30 @@ public class Vehicule {
     }
 
     /**
+     * Calcule la position de l'avant du véhicule selon sa direction. (en terme de pixels)
+     * @param v Le véhicule concerné.
+     * @return Un tableau [x, y] correspondant à la position avant du véhicule.
+     */
+    public static double[] getPositionAvantVehicule(Vehicule v) {
+        double x = v.getPosition().getAbscisse();
+        double y = v.getPosition().getOrdonee();
+        double demiLongueur = v.getLongueur() / 2;
+
+        switch (v.getDirection()) {
+            case 0: // Bas
+                return new double[]{x, y + demiLongueur};
+            case 1: // Haut
+                return new double[]{x, y - demiLongueur};
+            case 2: // Droite
+                return new double[]{x + demiLongueur , y};
+            case 3: // Gauche
+                return new double[]{x - demiLongueur  , y};
+            default:
+                return new double[]{x, y};
+        }
+    }
+
+    /**
      * Affiche les informations du véhicule.
      * @return Une chaîne de caractères représentant le véhicule.
      */
