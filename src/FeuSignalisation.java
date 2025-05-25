@@ -97,4 +97,47 @@ public class FeuSignalisation {
             default: return new Position(x, y);
         }
     }
+
+    /**
+     * Gère l'arrêt des véhicules en fonction des feux de signalisation.
+     * Arrête un véhicule s'il est proche d'un feu rouge dans sa direction.
+     *
+     * @param vehicules la liste des véhicules à mettre à jour
+     * @param feux la liste des feux de signalisation présents
+     */
+    public static void gererFeuxSignalisation(List<Vehicule> vehicules, List<FeuSignalisation> feux) {
+        double marge = 20; // Distance de sécurité avant le feu
+
+        for (Vehicule v : vehicules) {
+            boolean doitSArreter = false;
+
+            for (FeuSignalisation feu : feux) {
+                if (!feu.estVert()) {
+                    double[] positionAvant = Vehicule.getPositionAvantVehicule(v);
+                    double vx = positionAvant[0];
+                    double vy = positionAvant[1];
+                    double fx = feu.getPosition().getAbscisse();
+                    double fy = feu.getPosition().getOrdonee();
+                    int directionFeu = feu.getDirection();
+
+                    switch (v.getDirection()) {
+                        case 0 -> { if (vy < fy && (fy - vy) <= marge && directionFeu == 3) doitSArreter = true; }
+                        case 1 -> { if (vy > fy && (vy - fy) <= marge && directionFeu == 0) doitSArreter = true; }
+                        case 2 -> { if (vx < fx && (fx - vx) <= marge && directionFeu == 1) doitSArreter = true; }
+                        case 3 -> { if (vx > fx && (vx - fx) <= marge && directionFeu == 2) doitSArreter = true; }
+                    }
+
+                    if (doitSArreter) {
+                        v.setVitesse(0);
+                        break;
+                    }
+                }
+            }
+
+            // Réaccélération si feu passé et vitesse trop faible
+            if (!doitSArreter && v.getVitesseActuelle() < GenerateurVehicule.VITESSE_INITIALE) {
+                v.setVitesse(GenerateurVehicule.VITESSE_INITIALE);
+            }
+        }
+    }
 }
