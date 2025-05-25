@@ -24,9 +24,9 @@ public class Voiture extends Vehicule {
 
     // Chemins vers les images des voitures
     private static final String[] IMAGE_PATHS = {
-        "ressources/images/voiture_bleue.png",
-        "ressources/images/voiture_verte.png",
-        "ressources/images/voiture_rouge.png"
+        "images/voiture_bleue.png",
+        "images/voiture_verte.png",
+        "images/voiture_rouge.png"
     };
 
      /**
