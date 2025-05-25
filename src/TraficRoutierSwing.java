@@ -1,3 +1,8 @@
+/** Gestion principale de la simulation.
+*
+* @author Arthur Morain et Alexandre Mohib
+*/
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -92,79 +97,7 @@ public class TraficRoutierSwing extends JFrame {
         panneau = new PanneauSimulation(vehicules);
         simulationPanel.add(panneau, BorderLayout.CENTER);
 
-        simulationTimer = new Timer(simulationSpeed, e -> {
-            generateur.update(); // génération éventuelle de véhicules
-
-            for (Vehicule v : vehicules) {
-                boolean doitSArreter = false;
-
-                for (FeuSignalisation feu : panneau.getFeux()) {
-                    if (!feu.estVert()) {
-                        double[] positionAvant = getPositionAvantVehicule(v);
-                        double vx = positionAvant[0];
-                        double vy = positionAvant[1];
-                        double fx = feu.getPosition().getAbscisse();
-                        double fy = feu.getPosition().getOrdonee();
-                        double marge = 20; // Distance de sécurité (en mètres)
-                        int directionFeu = feu.getDirection();
-
-                        switch (v.getDirection()) {
-                            case 0: // Bas
-                                if (vy < fy && (fy - vy) <= marge && directionFeu == 3) {
-                                    doitSArreter = true;
-                                }
-                                break;
-                            case 1: // Haut
-                                if (vy > fy && (vy - fy) <= marge && directionFeu == 0) {
-                                    doitSArreter = true;
-                                }
-                                break;
-                            case 2: // Droite
-                                if (vx < fx && (fx - vx) <= marge && directionFeu == 1) {
-                                    doitSArreter = true;
-                                }
-                                break;
-                            case 3: // Gauche
-                                if (vx > fx && (vx - fx) <= marge && directionFeu == 2) {
-                                    doitSArreter = true;
-                                }
-                                break;
-                        }
-
-                        if (doitSArreter) {
-                            v.setVitesse(0); 
-                        }
-                    }
-                }
-
-                // Si pas d'obstacle, accélère
-                if (!doitSArreter) {
-                    v.setVitesse(GenerateurVehicule.VITESSE_INITIALE); // 0.1 seconde par tick par exemple
-                }
-            }
-
-            GestionCollision.gererCollisions(vehicules);
-
-            for (Vehicule v : vehicules) {
-                v.deplacer(0.1);
-            }
-
-            //Suppression des véhicules hors cadre et incrémentation.
-            vehicules.removeIf(v -> {
-                if (estHorsCadre(v)) {
-                    vehiculesPassesCount++;
-                    return true;
-                }
-                return false;
-            });
-
-            //Mise à jour des panneaux
-            panneau.repaint();
-            elapsedSeconds++;
-            vehiculesPresentsLabel.setText("Présents : " + vehicules.size());
-            vehiculesPassesLabel.setText("Passés : " + vehiculesPassesCount);
-            timerLabel.setText("Temps : " + elapsedSeconds + " s");
-        });
+        simulationTimer = new Timer(simulationSpeed, e -> updateSimulation());
 
         // === ACTIONS BOUTONS ===
         startButton.addActionListener(e -> {
@@ -246,27 +179,44 @@ public class TraficRoutierSwing extends JFrame {
         };
     }
 
-    /**
-     * Calcule la position de l'avant du véhicule selon sa direction. (en terme de pixels)
-     * @param v Le véhicule concerné.
-     * @return Un tableau [x, y] correspondant à la position avant du véhicule.
-     */
-    public static double[] getPositionAvantVehicule(Vehicule v) {
-        double x = v.getPosition().getAbscisse();
-        double y = v.getPosition().getOrdonee();
-        double demiLongueur = v.getLongueur() / 2;
+    /** Fais toutes les étapes pour mettre à jour la simulation.
+    *
+    */
+    private void updateSimulation() {
+        generateur.update(); // Génération éventuelle de véhicules
 
-        switch (v.getDirection()) {
-            case 0: // Bas
-                return new double[]{x, y + demiLongueur};
-            case 1: // Haut
-                return new double[]{x, y - demiLongueur};
-            case 2: // Droite
-                return new double[]{x + demiLongueur , y};
-            case 3: // Gauche
-                return new double[]{x - demiLongueur  , y};
-            default:
-                return new double[]{x, y};
+        // Étape 1 : gestion des collisions entre véhicules
+        GestionCollision.gererCollisions(vehicules);
+
+        // Étape 2 : freiner si feu rouge devant
+        FeuSignalisation.gererFeuxSignalisation(vehicules, panneau.getFeux());
+
+        // Étape 3 : appliquer le déplacement
+        deplacerVehiculeSimulation(vehicules);
+
+        // Étape 4 : suppression des véhicules hors cadre
+        vehicules.removeIf(v -> {
+            if (estHorsCadre(v)) {
+                vehiculesPassesCount++;
+                return true;
+            }
+            return false;
+        });
+
+        // Étape 5 : mise à jour de l'affichage
+        panneau.repaint();
+        elapsedSeconds++;
+        vehiculesPresentsLabel.setText("Présents : " + vehicules.size());
+        vehiculesPassesLabel.setText("Passés : " + vehiculesPassesCount);
+        timerLabel.setText("Temps : " + elapsedSeconds + " s");
+    }
+
+    /** Méthode permettant de faire le déplacement de tous les véhicules.
+     * @param vehicules la liste des véhicules
+     */
+    private static void deplacerVehiculeSimulation(List<Vehicule> vehicules) {
+        for (Vehicule v : vehicules) {
+            v.deplacer(0.1); // Avancer selon la vitesse
         }
     }
 
