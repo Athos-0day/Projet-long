@@ -1,6 +1,6 @@
 /** La classe permet de dessiner l'intersection dans la simulation.
  * 
- * @author Arthur Morain
+ * @author Arthur Morain et Mohib Alexandre
  */
 
 import java.awt.*;
@@ -19,12 +19,43 @@ public class PanneauSimulation extends JPanel {
     private static final int LIGNE_LONGUEUR = 30;
     private static final int LIGNE_ESPACE = 20;
 
+    // Images de décor
+    private Image decorHautGauche;
+    private Image decorHautGauche2;
+    private Image decorHautDroite;
+    private Image decorHautDroite2;
+    private Image decorBasGauche;
+    private Image decorBasGauche2;
+    private Image decorBasGauche3;
+    private Image decorBasGauche4;
+    private Image decorBasGauche5;
+    private Image decorBasGauche6;
+    private Image decorBasDroite;
+    private Image decorBasDroite2;
+    private Image decorBasDroite3;
+
+
     public PanneauSimulation(List<Vehicule> vehicules) {
         this.vehicules = vehicules;
         setPreferredSize(new Dimension(800, 800));
         setBackground(new Color(34, 139, 34)); // Vert herbe
 
-        feuTimer = new Timer(15000, new ActionListener() {
+        // Charger les images de décor
+        decorHautGauche = new ImageIcon("ressources/images/Mcdo.png").getImage();
+        decorHautGauche2 = new ImageIcon("ressources/images/arbre2.png").getImage();
+        decorHautDroite = new ImageIcon("ressources/images/immeuble.png").getImage();
+        decorHautDroite2 = new ImageIcon("ressources/images/immeuble.png").getImage();
+        decorBasGauche = new ImageIcon("ressources/images/maison.png").getImage();
+        decorBasGauche2 = new ImageIcon("ressources/images/maison.png").getImage();
+        decorBasGauche3 = new ImageIcon("ressources/images/maison.png").getImage();
+        decorBasGauche4 = new ImageIcon("ressources/images/arbre1.png").getImage();
+        decorBasGauche5 = new ImageIcon("ressources/images/arbre2.png").getImage();
+        decorBasGauche6 = new ImageIcon("ressources/images/arbre1.png").getImage();
+        decorBasDroite = new ImageIcon("ressources/images/tour.png").getImage();
+        decorBasDroite2 = new ImageIcon("ressources/images/arbre2.png").getImage();
+        decorBasDroite3 = new ImageIcon("ressources/images/arbre2.png").getImage();
+
+        feuTimer = new Timer(10000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 for (FeuSignalisation feu : feux) {
@@ -85,6 +116,48 @@ public class PanneauSimulation extends JPanel {
             if (y + LIGNE_LONGUEUR < roadY || y > roadY + rw) {
                 g.fillRect(xMid, y, 4, LIGNE_LONGUEUR);
             }
+        }
+
+        // Dessiner les éléments de décor
+        int decorSize = 300; // Taille des éléments de décor
+        if (decorHautGauche != null) {
+            g.drawImage(decorHautGauche, 0, 0, decorSize, decorSize, null);
+        }
+        if (decorHautGauche2 != null) {
+            g.drawImage(decorHautGauche2,250, 100, 150, 150, null);
+        }
+        if (decorHautDroite != null) {
+            g.drawImage(decorHautDroite, w - decorSize + 50, 0, decorSize, decorSize, null);
+        }
+        if (decorHautDroite2 != null) {
+            g.drawImage(decorHautDroite2, w - decorSize -150, 0, decorSize, decorSize, null);
+        }
+        if (decorBasGauche != null) {
+            g.drawImage(decorBasGauche, 0, h - decorSize, 150, 150, null);
+        }
+        if (decorBasGauche2 != null) {
+            g.drawImage(decorBasGauche2, 200, h - decorSize +150, 150, 150, null);
+        }
+        if (decorBasGauche3 != null) {
+            g.drawImage(decorBasGauche3, 200, h - decorSize, 150, 150, null);
+        }
+        if (decorBasGauche4 != null) {
+            g.drawImage(decorBasGauche4, 100, h - decorSize +50, 150, 150, null);
+        }
+        if (decorBasGauche5 != null) {
+            g.drawImage(decorBasGauche5, 50, h - decorSize +175, 150, 150, null);
+        }
+        if (decorBasGauche6 != null) {
+            g.drawImage(decorBasGauche6, 0, h - decorSize +100 , 150, 150, null);
+        }
+        if (decorBasDroite != null) {
+            g.drawImage(decorBasDroite, w - decorSize, h - decorSize, decorSize, decorSize, null);
+        }
+        if (decorBasDroite2 != null) {
+            g.drawImage(decorBasDroite2, w - decorSize - 75, h - decorSize + 130, 150, 150, null);
+        }
+        if (decorBasDroite3 != null) {
+            g.drawImage(decorBasDroite3, w - decorSize - 75, h - decorSize, 150, 150, null);
         }
 
         // Initialisation des feux
