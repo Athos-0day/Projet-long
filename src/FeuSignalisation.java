@@ -22,8 +22,8 @@ public class FeuSignalisation {
 
 
     // Chemins vers les images des feux
-    private static final String IMAGE_FEU_VERT = "ressources/images/feu_vert.png";
-    private static final String IMAGE_FEU_ROUGE = "ressources/images/feu_rouge.png";
+    private static final String IMAGE_FEU_VERT = "images/feu_vert.png";
+    private static final String IMAGE_FEU_ROUGE = "images/feu_rouge.png";
 
     public FeuSignalisation(int x, int y, boolean estVert, int direction) {
         this.x = x;
